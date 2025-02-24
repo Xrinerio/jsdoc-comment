@@ -1,0 +1,161 @@
+/**
+ * Opens the password recovery window and sets the email address.
+ * @param {string} email - The email address to be displayed in the recovery window.
+ */
+function openPasswordWindow(email) {
+    document.getElementById("email-rec").innerText = email;
+    let window = document.getElementById("confirm-window-rec");
+    window.style.left = "50%";
+    document.getElementById("main").style.filter = "brightness(0.3)";
+    document.getElementById("navbar").style.filter = "brightness(0.3)";
+    disableButtons();
+}
+
+/**
+ * Closes the password recovery window and resets the form fields.
+ */
+function closePasswordWindow() {
+    if (isTimerGoingRec) {
+        disableTimerRec(timerIdRec);
+    }
+
+    let window = document.getElementById("confirm-window-rec");
+    window.style.left = "-50%";
+    document.getElementById("main").style.filter = "brightness(1)";
+    document.getElementById("navbar").style.filter = "brightness(1)";
+    document.getElementById("input-code-rec").value = "";
+    document.getElementById("email-rec1").value = "";
+    document.getElementById("email-rec2").value = "";
+    document.getElementById("new-pass-info").innerText = "";
+    enableButtons();
+}
+
+/**
+ * Timer ID for the password recovery countdown.
+ * @type {number}
+ */
+let timerIdRec;
+
+/**
+ * Flag indicating whether the password recovery timer is running.
+ * @type {boolean}
+ */
+let isTimerGoingRec = false;
+
+/**
+ * Displays the countdown timer for password recovery.
+ * @param {number} duration - The duration of the countdown in seconds.
+ * @returns {number} The ID of the timer.
+ */
+function showTimeRec(duration) {
+    isTimerGoingRec = true;
+    let minutes = Math.floor(duration / 60);
+    let seconds = duration % 60;
+    timerIdRec = setInterval(() => {
+        let time;
+        if (seconds < 10) {
+            time = `${minutes}:0${seconds}`;
+        } else {
+            time = `${minutes}:${seconds}`;
+        }
+        document.getElementById("code-time-rec").innerHTML = time;
+        if (seconds != 0) {
+            seconds -= 1;
+        } else {
+            minutes -= 1;
+            seconds = 59;
+        }
+    }, 1000);
+
+    let thisTimerIdRec = timerIdRec;
+    setTimeout(() => {
+        if (thisTimerIdRec == timerIdRec && isTimerGoingRec) {
+            disableTimerRec(timerIdRec);
+            document.getElementById("new-code-rec").classList.add("display-off");
+            document.getElementById("get-code-wrapper-rec").classList.remove("display-off");
+        }
+    }, (duration + 1) * 1000);
+
+    return timerIdRec;
+}
+
+/**
+ * Disables the password recovery timer.
+ * @param {number} timerID - The ID of the timer to be disabled.
+ */
+function disableTimerRec(timerID) {
+    clearInterval(timerID);
+    isTimerGoingRec = false;
+}
+
+/**
+ * Toggles the visibility of the login password input field.
+ */
+document.getElementById("login-visibility-button").addEventListener("click", () => {
+    const button = document.getElementById("login-visibility-button");
+    if (button.getAttribute("data-state") === "hidden") {
+        document.getElementById("login-pass-input").setAttribute("type", "text");
+        document.getElementById("login-pass-show-icon").classList.add("display-off");
+        document.getElementById("login-pass-hide-icon").classList.remove("display-off");
+        button.setAttribute("data-state", "visible");
+    } else {
+        document.getElementById("login-pass-input").setAttribute("type", "password");
+        document.getElementById("login-pass-show-icon").classList.remove("display-off");
+        document.getElementById("login-pass-hide-icon").classList.add("display-off");
+        button.setAttribute("data-state", "hidden");
+    }
+})
+
+/**
+ * Toggles the visibility of the register password input field.
+ */
+document.getElementById("register-visibility-button").addEventListener("click", () => {
+    const button = document.getElementById("register-visibility-button");
+    if (button.getAttribute("data-state") === "hidden") {
+        document.getElementById("register-pass-input").setAttribute("type", "text");
+        document.getElementById("register-pass-show-icon").classList.add("display-off");
+        document.getElementById("register-pass-hide-icon").classList.remove("display-off");
+        button.setAttribute("data-state", "visible");
+    } else {
+        document.getElementById("register-pass-input").setAttribute("type", "password");
+        document.getElementById("register-pass-show-icon").classList.remove("display-off");
+        document.getElementById("register-pass-hide-icon").classList.add("display-off");
+        button.setAttribute("data-state", "hidden");
+    }
+})
+
+/**
+ * Toggles the visibility of the first recovery password input field.
+ */
+document.getElementById("recover-visibility-button1").addEventListener("click", () => {
+    const button = document.getElementById("recover-visibility-button1");
+    if (button.getAttribute("data-state") === "hidden") {
+        document.getElementById("email-rec1").setAttribute("type", "text");
+        document.getElementById("recover-pass-show-icon1").classList.add("display-off");
+        document.getElementById("recover-pass-hide-icon1").classList.remove("display-off");
+        button.setAttribute("data-state", "visible");
+    } else {
+        document.getElementById("email-rec1").setAttribute("type", "password");
+        document.getElementById("recover-pass-show-icon1").classList.remove("display-off");
+        document.getElementById("recover-pass-hide-icon1").classList.add("display-off");
+        button.setAttribute("data-state", "hidden");
+    }
+})
+
+/**
+ * Toggles the visibility of the second recovery password input field.
+ */
+document.getElementById("recover-visibility-button2").addEventListener("click", () => {
+    const button = document.getElementById("recover-visibility-button2");
+    if (button.getAttribute("data-state") === "hidden") {
+        document.getElementById("email-rec2").setAttribute("type", "text");
+        document.getElementById("recover-pass-show-icon2").classList.add("display-off");
+        document.getElementById("recover-pass-hide-icon2").classList.remove("display-off");
+        button.setAttribute("data-state", "visible");
+    } else {
+        document.getElementById("email-rec2").setAttribute("type", "password");
+        document.getElementById("recover-pass-show-icon2").classList.remove("display-off");
+        document.getElementById("recover-pass-hide-icon2").classList.add("display-off");
+        button.setAttribute("data-state", "hidden");
+    }
+})

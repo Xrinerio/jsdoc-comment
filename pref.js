@@ -7,7 +7,6 @@ async function readFilesInFolder() {
   const writepath = "./test-js";
 
   const files = await fs.readdir(folderpath);
-  console.log(files);
 
   for (const file of files) {
     const filepath = path.join(folderpath, file);
